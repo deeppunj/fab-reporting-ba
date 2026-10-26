@@ -1,0 +1,4 @@
+product_id,product_name,technology,target_yield_pct,target_ct_days
+P-LOGIC,Logic test vehicle,CMOS,88,7.0
+P-SIPH,Si photonics MPW,Si photonics,85,5.5
+P-3DI,3D integration,3D stacking,80,5.5

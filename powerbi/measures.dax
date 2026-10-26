@@ -1,0 +1,39 @@
+// DAX measures for the Power BI model (create them in a table called _Measures).
+// Definitions follow docs/02_kpi_dictionary.md.
+
+Lots Out = COUNTROWS ( fact_lot )
+
+Avg Cycle Time (days) = AVERAGE ( fact_lot[cycle_time_days] )
+
+On-Time % = DIVIDE ( SUM ( fact_lot[on_time] ), COUNTROWS ( fact_lot ) )
+
+Avg X-Factor = AVERAGE ( fact_lot[x_factor] )
+
+Avg Yield % = AVERAGE ( fact_lot[die_yield_pct] ) / 100
+
+Avg Queue (h) = AVERAGE ( fact_lot_step[queue_hours] )
+
+-- share of all waiting time that happens at this tool group
+Queue Share % =
+DIVIDE (
+    SUM ( fact_lot_step[queue_hours] ),
+    CALCULATE ( SUM ( fact_lot_step[queue_hours] ), REMOVEFILTERS ( dim_step ) )
+)
+
+Availability % =
+DIVIDE (
+    SUM ( fact_tool_day[up_hours] ),
+    SUM ( fact_tool_day[up_hours] ) + SUM ( fact_tool_day[pm_hours] ) + SUM ( fact_tool_day[unscheduled_hours] )
+)
+
+Utilization % = DIVIDE ( SUM ( fact_tool_day[busy_hours] ), SUM ( fact_tool_day[up_hours] ) )
+
+-- WIP is a level, not a flow: never add days together.
+-- For a week or month, show the value on the last day.
+WIP (end of period) =
+CALCULATE ( SUM ( fact_wip_day[wip_lots] ), LASTDATE ( dim_date[date] ) )
+
+-- time intelligence: change versus the previous month
+Cycle Time vs Prev Month =
+[Avg Cycle Time (days)]
+    - CALCULATE ( [Avg Cycle Time (days)], DATEADD ( dim_date[date], -1, MONTH ) )

@@ -1,0 +1,11 @@
+rule,rows_affected,action
+Duplicate move rows,40,Removed
+Same lot and step twice (business key),0,Removed; kept the row with a tool id
+Missing tool id,24,Kept; tool set to UNKNOWN
+Tool id not in tool master,10,Kept; tool set to UNKNOWN
+Track-out before track-in,15,Kept; process time left empty
+Total raw move rows,15151,Input
+Clean move rows,15111,Output
+fact_lot_step tool not in dim_tool,0,Must be 0
+fact_lot_step step not in dim_step,0,Must be 0
+fact_lot lot without yield,0,Must be 0
