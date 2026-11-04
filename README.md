@@ -3,7 +3,7 @@
 **Live dashboard: [fab-reporting-ba.streamlit.app](https://fab-reporting-ba.streamlit.app)**
 
 
-An end-to-end reporting solution for a semiconductor pilot line, run the way a reporting business analyst works: from the business problem and stakeholder requirements, through KPI definitions, a Kimball star schema and automated data-quality checks, to SQL analysis, a tested Streamlit dashboard and and a Power BI report.
+An end-to-end reporting solution for a semiconductor pilot line, run the way a reporting business analyst works: from the business problem and stakeholder requirements, through KPI definitions, a Kimball star schema and automated data-quality checks, to SQL analysis, a tested Streamlit dashboard and a Power BI report.
 
 [![Dashboard](docs/dashboard.png)](https://fab-reporting-ba.streamlit.app)
 
