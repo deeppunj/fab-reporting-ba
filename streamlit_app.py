@@ -174,6 +174,46 @@ st.dataframe(
     },
 )
 
+# ---------------------------------------------------------------- what-if simulation
+# Shows results saved by simulation/dispatch_simulation.py. The simulation is not run
+# here (it takes a couple of minutes), so this section only reads its result files.
+SIM = Path(__file__).parent / "simulation" / "results"
+st.subheader("What-if: which lot goes first at lithography")
+if (SIM / "dispatch_rules_summary.csv").exists():
+    st.caption("Saved results of a small queue simulation of this line (SimPy). All products: the filters above do not "
+               "apply here. Utilization in the simulation matches the data, but waiting times are shorter than in the "
+               "data, so compare the rules with each other and not with the numbers above. "
+               f"[Details and limits]({GITHUB}/tree/main/simulation)")
+    sim = pd.read_csv(SIM / "dispatch_rules_summary.csv")
+    sim["rule"] = sim["rule"].map({"fifo": "First in, first out", "hot_first": "Hot lots first",
+                                   "due_date": "Earliest due date"})
+    load_pick = st.select_slider("Lot starts compared with the data (1.0 = as is)",
+                                 options=sorted(sim["load"].unique()), value=1.1)
+    st.dataframe(
+        sim[sim["load"] == load_pick].set_index("rule")
+           [["litho_wait_normal_h", "litho_wait_hot_h", "litho_wait_p95_h", "on_time_pct"]],
+        column_config={
+            "rule": "Rule",
+            "litho_wait_normal_h": st.column_config.NumberColumn("Normal lots wait (h)", format="%.1f"),
+            "litho_wait_hot_h": st.column_config.NumberColumn("Hot lots wait (h)", format="%.1f"),
+            "litho_wait_p95_h": st.column_config.NumberColumn("95th percentile wait (h)", format="%.1f"),
+            "on_time_pct": st.column_config.NumberColumn("Lots on time (%)", format="%.1f"),
+        },
+    )
+    rule_colours = ["#1baf7a", BLUE, "#eb6834"]       # earliest due date, first in first out, hot lots first
+    left, right = st.columns(2)
+    left.caption("Lots finished on time (%) as the line gets busier")
+    left.line_chart(sim.pivot(index="load", columns="rule", values="on_time_pct"), color=rule_colours,
+                    x_label="Lot starts compared with the data", y_label="Lots on time (%)")
+    right.caption("95th percentile wait at lithography (h): the unlucky lots")
+    right.line_chart(sim.pivot(index="load", columns="rule", values="litho_wait_p95_h"), color=rule_colours,
+                     x_label="Lot starts compared with the data", y_label="Wait (h)")
+    if (SIM / "weight_search.png").exists():
+        with st.expander("How much weight on the due date?"):
+            st.image(str(SIM / "weight_search.png"))
+else:
+    st.caption("Simulation results are not in this copy of the project.")
+
 # ---------------------------------------------------------------- data quality
 st.subheader("Data quality")
 st.caption("Every check run on the MES export before reporting. Nothing is removed without being counted here.")

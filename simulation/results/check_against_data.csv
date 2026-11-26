@@ -1,0 +1,9 @@
+,utilization_data_pct,utilization_sim_pct,wait_data_h,wait_sim_h
+LITHO,75.3,81.0,8.5,4.0
+DEPOSITION,50.6,51.3,3.4,0.2
+FURNACE,26.1,26.3,4.4,0.2
+ETCH,22.0,22.1,2.9,0.0
+CLEAN,12.2,12.3,1.0,0.0
+CMP,10.0,10.0,2.4,0.1
+METROLOGY,9.8,9.9,1.4,0.0
+IMPLANT,2.9,3.0,1.9,0.0

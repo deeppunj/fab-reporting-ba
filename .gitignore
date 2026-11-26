@@ -2,3 +2,4 @@ __pycache__/
 *.pbix.bak
 .DS_Store
 .idea/
+personal_docs/

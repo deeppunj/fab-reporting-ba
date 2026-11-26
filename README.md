@@ -43,7 +43,12 @@ streamlit_app.py                         the dashboard (reads data/clean/)
 sql/01..03                               PostgreSQL schema, load script, KPI queries
 powerbi/                                 DAX measures, Power BI report (.pbix) and build guide
 docs/                                    business brief, KPI dictionary, data model, test plan
+simulation/                              queue simulation of dispatching rules at lithography (own README)
 ```
+
+## Simulation: which lot goes first at lithography
+
+The data here is simulated, and so is the follow-up question: when several lots wait for lithography, which one should go first? The [`simulation/`](simulation/) folder holds a small queue simulation (SimPy) of this pilot line that compares three dispatching rules as the line gets busier. It also shows where the simulation and the generated data disagree: utilization matches, waiting times do not, because the generator draws queue times from fixed averages. Results and limits are in [simulation/README.md](simulation/README.md).
 
 ## Run it
 
@@ -62,7 +67,7 @@ psql -d fab_reporting -f sql/03_kpi_queries.sql
 
 ## Tools
 
-Python (pandas, NumPy) · PostgreSQL · SQL · Streamlit · Power BI (DAX) · GitHub
+Python (pandas, NumPy, SimPy) · PostgreSQL · SQL · Streamlit · Power BI (DAX) · GitHub
 
 ## Possible extensions
 
